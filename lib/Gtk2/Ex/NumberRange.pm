@@ -1,6 +1,6 @@
 package Gtk2::Ex::NumberRange;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use strict;
 use warnings;
@@ -98,21 +98,22 @@ sub _clear {
 sub attach_popup_to {
 	my ($self, $parent) = @_;
 	my $popupwindow = Gtk2::Ex::PopupWindow->new($parent);
-	my $close = Gtk2::Button->new_from_stock('gtk-close');
-	$close->signal_connect ('button-release-event' => 
+	$popupwindow->set_move_with_parent(TRUE);
+	my $okbutton = Gtk2::Button->new_from_stock('gtk-ok');
+	$okbutton->signal_connect ('button-release-event' => 
 		sub {
 			$popupwindow->hide;
 		}
 	);
-	my $clear = Gtk2::Button->new_from_stock('gtk-clear');
-	$clear->signal_connect ('button-release-event' => 
+	my $clearbutton = Gtk2::Button->new_from_stock('gtk-clear');
+	$clearbutton->signal_connect ('button-release-event' => 
 		sub {
 			$self->_clear;
 		}
 	);
 	my $hbox = Gtk2::HBox->new(TRUE, 0);
-	$hbox->pack_start ($clear, TRUE, TRUE, 0); 	
-	$hbox->pack_start ($close, TRUE, TRUE, 0); 	
+	$hbox->pack_start ($clearbutton, TRUE, TRUE, 0); 	
+	$hbox->pack_start ($okbutton, TRUE, TRUE, 0); 	
 	my $vbox = Gtk2::VBox->new (FALSE, 0);
 	$vbox->pack_start ($self->{widget}, TRUE, TRUE, 0);
 	$vbox->pack_start ($hbox, FALSE, FALSE, 0); 	
